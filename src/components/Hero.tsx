@@ -5,11 +5,26 @@ import CountdownTimer from './CountdownTimer';
 const Hero: React.FC = () => {
   const [email, setEmail] = useState('');
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, send the email to your backend
-    alert(`Thank you! ${email} has been added to our waitlist.`);
-    setEmail('');
+    setIsSubmitting(true);
+    
+    try {
+      await fetch("https://hook.eu2.make.com/aywhwwinx9e3mjagp6mj9g8l9hpovlrv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email })
+      });
+
+      alert("✅ You're on the waitlist!");
+      setEmail('');
+    } catch (error) {
+      alert("Something went wrong. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -47,17 +62,19 @@ const Hero: React.FC = () => {
             <input
               type="email"
               placeholder="Your email address"
-              className="w-full pl-10 pr-3 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-400"
+              className="w-full pl-10 pr-3 py-3 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-teal-400 disabled:opacity-50"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              disabled={isSubmitting}
               required
             />
           </div>
           <button
             type="submit"
-            className="py-3 px-6 bg-gradient-to-r from-teal-400 to-pink-500 rounded-lg text-white font-semibold hover:opacity-90 transition duration-200 whitespace-nowrap"
+            disabled={isSubmitting}
+            className="py-3 px-6 bg-gradient-to-r from-teal-400 to-pink-500 rounded-lg text-white font-semibold hover:opacity-90 transition duration-200 whitespace-nowrap disabled:opacity-50"
           >
-            Join the Waitlist
+            {isSubmitting ? 'Joining...' : 'Join the Waitlist'}
           </button>
         </form>
 
