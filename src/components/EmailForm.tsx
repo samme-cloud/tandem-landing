@@ -18,7 +18,7 @@ const EmailForm: React.FC<EmailFormProps> = ({
     setIsSubmitting(true);
 
     try {
-      await fetch("https://hook.eu2.make.com/vfnysqfhz4ml2rbzgx9krhum208zf9rx", {
+      await fetch("https://hook.eu2.make.com/aywhwwinx9e3mjagp6mj9g8l9hpovlrv", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email })
